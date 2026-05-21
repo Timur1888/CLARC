@@ -1,0 +1,160 @@
+{
+  "_version": "1.84.0",
+  "sap.app": {
+    "id": "clarc.billing.clarcbillingapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.24.0",
+      "toolsId": "95af88d3-74a6-4fcc-9df8-0723afc926cb"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "Billing-display": {
+          "semanticObject": "Billing",
+          "action": "display",
+          "title": "{{Billing-display.flpTitle}}",
+          "subTitle": "{{Billing-display.flpSubtitle}}",
+          "icon": "",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "ach": "clarc.billing.clarcbillingapp",
+    "dependencies": {
+      "minUI5Version": "1.148.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.comp": {},
+        "sap.ui.fl": {},
+        "sap.ui.mdc": {},
+        "sap.f": {},
+        "sap.ui.unified": {},
+        "sap.ui.layout": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "config": {
+      "fullWidth": true
+    },
+    "models": {
+      "backend": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "auth": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "filterModel": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "billingConfig": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "clarc.billing.clarcbillingapp.i18n.i18n",
+          "supportedLocales": [
+            "de",
+            "en"
+          ],
+          "fallbackLocale": "en"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "beginColumnPages",
+        "controlId": "layout",
+        "clearControlAggregation": true,
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "clarc.billing.clarcbillingapp.view",
+        "async": true,
+        "viewPath": "clarc.billing.clarcbillingapp.view"
+      },
+      "routes": [
+        {
+          "name": "RouteView1",
+          "pattern": "",
+          "target": [
+            "TargetView1"
+          ]
+        },
+        {
+          "name": "DetailsRoute",
+          "pattern": "Details/{invoiceId}",
+          "target": [
+            "Details"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetView1": {
+          "id": "View1",
+          "name": "View1",
+          "viewLevel": "1",
+          "controlAggregation": "beginColumnPages"
+        },
+        "Details": {
+          "id": "Details",
+          "name": "Details",
+          "viewLevel": "2",
+          "controlAggregation": "midColumnPages"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "clarc.billing.clarcbillingapp.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "billing"
+  }
+}

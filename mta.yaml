@@ -1,0 +1,99 @@
+_schema-version: "3.2"
+ID: CLARC
+version: 0.0.1
+modules:
+# 1) Deploy Destination module
+- name: CLARC-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: CLARC-destination-service
+    parameters:
+      content-target: true
+  - name: CLARC_html_repo_host
+    parameters:
+      service-key:
+        name: CLARC_html_repo_host-key
+  - name: uaa_CLARC
+    parameters:
+      service-key:
+        name: uaa_CLARC-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: billing_CLARC_html_repo_host
+          ServiceInstanceName: CLARC-html5-app-host-service
+          ServiceKeyName: CLARC_html_repo_host-key
+          sap.cloud.service: billing
+        - Authentication: OAuth2UserTokenExchange
+          Name: billing_uaa_CLARC
+          ServiceInstanceName: CLARC-xsuaa-service
+          ServiceKeyName: uaa_CLARC-key
+          sap.cloud.service: billing
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+# 2) Deploy App Content in HTML5 Repo
+- name: CLARC-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: CLARC_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - clarcbillingclarcbillingapp.zip
+      name: clarcbillingclarcbillingapp
+      target-path: resources/
+# 3) UI5 Build Module (App Module)
+- name: clarcbillingclarcbillingapp
+  type: html5
+  path: clarc-billing-app
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+# Destination Service
+- name: CLARC-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: CLARC-destination-service
+    service-plan: lite
+# HTML5 Repo Host - upload html5 apps
+- name: CLARC_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: CLARC-html5-app-host-service
+    service-plan: app-host
+# XSUAA 
+- name: uaa_CLARC
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: CLARC-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
