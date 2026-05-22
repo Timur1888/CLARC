@@ -30,7 +30,7 @@ modules:
           ServiceInstanceName: CLARC-xsuaa-service
           ServiceKeyName: uaa_CLARC-key
           sap.cloud.service: billing
-        existing_destinations_policy: ignore
+        existing_destinations_policy: update
   build-parameters:
     no-source: true
 # 2) Deploy App Content in HTML5 Repo
@@ -59,6 +59,23 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+# 4) App Router Module  
+- name: CLARC-approuter
+  type: approuter.nodejs
+  path: approuter
+  requires:
+  - name: uaa_CLARC
+  - name: CLARC-destination-service
+  - name: CLARC_html_repo_runtime
+  properties:
+    TENANT_HOST_PATTERN: "^(.*)-clarc-billing-app.cfapps.eu30.hana.ondemand.com$"
+  parameters:
+    memory: 256M
+    disk-quota: 256M
+    keep-existing-routes: true
+    routes:
+    - route: clarc-billing-app.cfapps.eu30.hana.ondemand.com
+
 resources:
 # Destination Service
 - name: CLARC-destination-service
@@ -86,7 +103,14 @@ resources:
     service: html5-apps-repo
     service-name: CLARC-html5-app-host-service
     service-plan: app-host
-# XSUAA 
+# HTML5 Repo Runtime - to run html5 apps from repo
+- name: CLARC_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: CLARC-html5-app-runtime-service
+    service-plan: app-runtime
+# XSUAA
 - name: uaa_CLARC
   type: org.cloudfoundry.managed-service
   parameters:
@@ -94,6 +118,25 @@ resources:
     service: xsuaa
     service-name: CLARC-xsuaa-service
     service-plan: application
+# SaaS Registry 
+- name: CLARC-saas-registry
+  type: org.cloudfoundry.managed-service
+  requires:
+  - name: uaa_CLARC
+  parameters:
+    service: saas-registry
+    service-plan: application
+    config:
+      xsappname: clarc
+      appName: clarc-billing-app
+      displayName: CLARC Billing
+      description: CLARC Billing SaaS Application
+      category: Custom
+      appUrls:
+        onSubscription: https://test.app.clarc.com/application/api/v1/saas/tenants/{tenantId}
+        onSubscriptionAsync: false
+        onUnSubscription: https://test.app.clarc.com/application/api/v1/saas/tenants/{tenantId}
+        onUnSubscriptionAsync: false
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
