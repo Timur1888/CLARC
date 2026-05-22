@@ -1,6 +1,5 @@
-/mta_archives/
-/node_modules/
-/resources/
-/dist/
-approuter/node_modules
-
+mta_archives/
+node_modules/
+resources/
+dist/
+approuter/node_modules/
