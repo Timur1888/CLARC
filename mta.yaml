@@ -9,27 +9,22 @@ modules:
   - name: CLARC-destination-service
     parameters:
       content-target: true
-  - name: CLARC_html_repo_host
+  - name: CLARC_html_repo_runtime
     parameters:
       service-key:
-        name: CLARC_html_repo_host-key
+        name: CLARC_html_repo_runtime-key
   - name: uaa_CLARC
     parameters:
       service-key:
         name: uaa_CLARC-key
   parameters:
     content:
-      instance:
+      subaccount:
         destinations:
-        - Name: billing_CLARC_html_repo_host
-          ServiceInstanceName: CLARC-html5-app-host-service
-          ServiceKeyName: CLARC_html_repo_host-key
-          sap.cloud.service: billing
-        - Authentication: OAuth2UserTokenExchange
-          Name: billing_uaa_CLARC
-          ServiceInstanceName: CLARC-xsuaa-service
-          ServiceKeyName: uaa_CLARC-key
-          sap.cloud.service: billing
+        - Name: clarc-billing-dt
+          ServiceInstanceName: CLARC-html5-app-runtime-service
+          ServiceKeyName: CLARC_html_repo_runtime-key
+          URL: https://html5-apps-repo-rt.${default-domain}/applications/cdm/billing
         existing_destinations_policy: update
   build-parameters:
     no-source: true
@@ -41,8 +36,13 @@ modules:
   - name: CLARC_html_repo_host
     parameters:
       content-target: true
+  - name: uaa_CLARC
   build-parameters:
     build-result: resources
+    builder: custom
+    commands:
+      - mkdir -p resources
+      - cp workzone/cdm.json resources/cdm.json
     requires:
     - artifacts:
       - clarcbillingclarcbillingapp.zip
@@ -84,13 +84,14 @@ resources:
     config:
       HTML5Runtime_enabled: true
       init_data:
-        instance:
+        subaccount:
           destinations:
           - Authentication: NoAuthentication
-            Name: ui5
+            Name: clarc-billing-rt
             ProxyType: Internet
             Type: HTTP
-            URL: https://ui5.sap.com
+            CEP.HTML5contentprovider: true
+            URL: https://billing-dev-5uwgy3of.launchpad.${default-domain}
           existing_destinations_policy: update
       version: 1.0.0
     service: destination

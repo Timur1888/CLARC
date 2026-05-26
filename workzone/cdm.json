@@ -1,0 +1,75 @@
+[
+  {
+    "_version": "3.0",
+    "identification": {
+      "entityType": "catalog",
+      "id": "managedCatalogID",
+      "title": "Catalog"
+    },
+    "payload": {
+      "viz": [
+        {
+          "appId": "clarc.billing.clarcbillingapp",
+          "vizId": "Billing-display"
+        }
+      ]
+    },
+    "texts": [
+      {
+        "locale": "",
+        "textDictionary": {
+          "title": "Billing Catalog"
+        }
+      }
+    ]
+  },
+  {
+    "_version": "3.0",
+    "identification": {
+      "entityType": "group",
+      "id": "managedGroupID",
+      "title": "Group"
+    },
+    "payload": {
+      "viz": [
+        {
+          "appId": "clarc.billing.clarcbillingapp",
+          "vizId": "Billing-display"
+        }
+      ]
+    },
+    "texts": [
+      {
+        "locale": "",
+        "textDictionary": {
+          "title": "Billing Group"
+        }
+      }
+    ]
+  },
+  {
+    "_version": "3.0",
+    "identification": {
+      "entityType": "role",
+      "id": "managedRoleID",
+      "title": "Billing Role"
+    },
+    "payload": {
+      "apps": [
+        {
+          "id": "clarc.billing.clarcbillingapp"
+        }
+      ],
+      "catalogs": [
+        {
+          "id": "managedCatalogID"
+        }
+      ],
+      "groups": [
+        {
+          "id": "managedGroupID"
+        }
+      ]
+    }
+  }
+]
