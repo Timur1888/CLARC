@@ -129,7 +129,7 @@ resources:
     service-plan: application
     config:
       xsappname: clarc
-      appName: clarc-billing-app
+      name: clarc-billing-app
       displayName: CLARC Billing
       description: CLARC Billing SaaS Application
       category: Custom

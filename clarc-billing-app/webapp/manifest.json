@@ -7,8 +7,8 @@
     "applicationVersion": {
       "version": "0.0.1"
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
+    "title": "Billing",
+    "description": "SaaS Billing Application",
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
@@ -20,9 +20,9 @@
         "Billing-display": {
           "semanticObject": "Billing",
           "action": "display",
-          "title": "{{Billing-display.flpTitle}}",
-          "subTitle": "{{Billing-display.flpSubtitle}}",
-          "icon": "",
+          "title": "Billing",
+          "subTitle": "SaaS Billing App",
+          "icon": "sap-icon://travel-expense-report",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
@@ -34,8 +34,8 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "",
-      "favIcon": "",
+      "icon": "sap-icon://travel-expense-report",
+      "favIcon": "sap-icon://travel-expense-report",
       "phone": "",
       "phone@2": "",
       "tablet": "",
