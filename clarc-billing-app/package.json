@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "fiori run --open \"test/flp.html#app-preview\"",
+    "start-local-flex": "fiori run --config ./ui5-local.yaml --open \"/index.html?sap-ui-xx-viewCache=false\"",
     "start-local": "fiori run --config ./ui5-local.yaml --open \"test/flp.html#app-preview\"",
     "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
     "lint": "eslint ./",

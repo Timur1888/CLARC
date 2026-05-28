@@ -37,6 +37,7 @@ modules:
     parameters:
       content-target: true
   - name: uaa_CLARC
+  - name: CLARC-ui5-flexibility-keyuser
   build-parameters:
     build-result: resources
     builder: custom
@@ -132,12 +133,20 @@ resources:
       name: clarc-billing-app
       displayName: CLARC Billing
       description: CLARC Billing SaaS Application
-      category: Custom
+      category: Custom 
       appUrls:
         onSubscription: https://test.app.clarc.com/application/api/v1/saas/tenants/{tenantId}
         onSubscriptionAsync: false
         onUnSubscription: https://test.app.clarc.com/application/api/v1/saas/tenants/{tenantId}
         onUnSubscriptionAsync: false
+
+# NEW: UI5 Flexibility Service for Key Users
+- name: CLARC-ui5-flexibility-keyuser
+  parameters:
+    service: ui5-flexibility-keyuser
+    service-plan: keyuser
+  type: org.cloudfoundry.managed-service
+
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
