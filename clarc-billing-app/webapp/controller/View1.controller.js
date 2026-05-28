@@ -292,9 +292,9 @@ sap.ui.define([
 
             // Spaltenstatus speichern
             const oTable = this.byId("tblBilling");
-            const aColsState = (oTable && oTable.getColumns ? oTable.getColumns() : []).map(function (oCol) {
+            const aColsState = oTable.getColumns().map(function (oCol) {
                 return {
-                    id: oCol.getId(),
+                    key: oCol.data("variantKey") || oCol.data("sortKey"),
                     visible: oCol.getVisible()
                 };
             });
@@ -353,13 +353,18 @@ sap.ui.define([
 
                 const aCols = oTable.getColumns();
                 if (!aCols || !aCols.length) { return; }
-
-                // map: id -> column
+                
                 const mCols = Object.create(null);
-                aCols.forEach(c => mCols[c.getId()] = c);
+
+                aCols.forEach(function (c) {
+                    const sKey = c.data("variantKey") || c.data("sortKey");
+                    if (sKey) {
+                        mCols[sKey] = c;
+                    }
+                });
 
                 aColsState.forEach(function (cState) {
-                    const oCol = mCols[cState.id];
+                    const oCol = mCols[cState.key];
                     if (oCol && typeof cState.visible === "boolean") {
                         oCol.setVisible(cState.visible);
                     }

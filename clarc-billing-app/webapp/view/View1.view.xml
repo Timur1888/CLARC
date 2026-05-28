@@ -269,6 +269,7 @@
                                 <Column id="colPdf" headerMenu="columnHeaderMenu" width="50px" hAlign="Center">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/Basics/TransferFormat" writeToDom="false"/>
+                                        <core:CustomData key="variantKey" value="Pdf" writeToDom="false"/>
                                     </customData>
                                     <Text id="txtColPdf" text="{i18n>PDF}"/>
                                 </Column>
