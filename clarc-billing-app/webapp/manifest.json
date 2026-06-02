@@ -34,8 +34,8 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "sap-icon://travel-expense-report",
-      "favIcon": "sap-icon://travel-expense-report",
+      "icon": "img/SAP.ico",
+      "favIcon": "img/SAP.ico",
       "phone": "",
       "phone@2": "",
       "tablet": "",

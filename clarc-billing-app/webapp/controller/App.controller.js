@@ -6,12 +6,14 @@ sap.ui.define([
 
   return BaseController.extend("clarc.billing.clarcbillingapp.controller.App", {
     onInit() {
+      const bInLaunchpad = !!(sap.ushell && sap.ushell.Container);
+
       const oViewModel = new JSONModel({
         layout: "OneColumn",
-        openDetailsOnMatch: false
+        openDetailsOnMatch: false,
+        showStandaloneShell: !bInLaunchpad
       });
 
-      // Modell auf App-View setzen, wird zu Kind-Views (View1, Details) durchgereicht
       this.getView().setModel(oViewModel, "mainView");
     }
   });

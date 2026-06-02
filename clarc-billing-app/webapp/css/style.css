@@ -106,3 +106,7 @@
 .billingNoPageScroll {
     overflow: hidden;
 }
+
+.clarcMainLayout {
+  flex: 1;
+}

@@ -1,13 +1,30 @@
-<mvc:View controllerName="clarc.billing.clarcbillingapp.controller.App"
-    displayBlock="true"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m"
-    xmlns:f="sap.f">
-    <App id="app">
+<mvc:View
+  controllerName="clarc.billing.clarcbillingapp.controller.App"
+  displayBlock="true"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:f="sap.f">
+
+  <App id="app">
+    <Page id="page" showHeader="false" enableScrolling="false">
+      <VBox id="vBox" fitContainer="true" renderType="Bare">
+
+        <f:ShellBar
+            id="shellBar"
+            homeIcon="img/SAP.png"
+            visible="{mainView>/showStandaloneShell}"
+            title="CLARC"
+            secondTitle="Billing"
+            showMenuButton="false" />
+
         <f:FlexibleColumnLayout
-            id="layout"
-            layout="{mainView>/layout}"
-            backgroundDesign="Translucent">
-        </f:FlexibleColumnLayout>
-    </App>
+          id="layout"
+          class="clarcMainLayout"
+          layout="{mainView>/layout}"
+          backgroundDesign="Translucent" />
+
+      </VBox>
+    </Page>
+  </App>
+
 </mvc:View>
