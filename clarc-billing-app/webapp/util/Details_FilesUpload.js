@@ -1,4 +1,4 @@
-sap.ui.define(["clarc/billing/clarcbillingapp/util/Api"], function (Api) {
+sap.ui.define(["clarc/billing/clarcbillingapp/util/Api", "clarc/billing/clarcbillingapp/util/ImageDialogHelper"], function (Api, ImageDialogHelper) {
   "use strict";
 
   return {
@@ -342,22 +342,7 @@ sap.ui.define(["clarc/billing/clarcbillingapp/util/Api"], function (Api) {
       }
 
       if (bIsImg) {
-        if (!oController._oImageDialog) {
-          oController._oImageDialog = new sap.m.Dialog({
-            title: "Image",
-            stretch: true,
-            content: [new sap.m.Image({ width: "100%", densityAware: false })],
-            beginButton: new sap.m.Button({
-              text: "Close",
-              press: () => oController._oImageDialog.close()
-            })
-          });
-          oController.getView().addDependent(oController._oImageDialog);
-        }
-
-        oController._oImageDialog.setTitle(sName);
-        oController._oImageDialog.getContent()[0].setSrc(sUrl);
-        oController._oImageDialog.open();
+        ImageDialogHelper.openImageDialog(oController, sUrl, sName);
         return;
       }
 
