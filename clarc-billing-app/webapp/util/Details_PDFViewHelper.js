@@ -176,31 +176,114 @@ sap.ui.define([
       }
 
       if (sKind === "image") {
-        // ✅ Bild-Popup (lazy, einmalig)
+        if (!oController._iImageZoom) {
+          oController._iImageZoom = 1;
+        }
+
         if (!oController._oImageDialog) {
+          const oImage = new sap.m.Image({
+            densityAware: false,
+            width: "100%",
+            height: "100%"
+          }).addStyleClass("previewZoomImage");
+
+          const oImageWrapper = new sap.m.VBox({
+            width: "100%",
+            height: "100%",
+            alignItems: "Center",
+            justifyContent: "Center",
+            items: [oImage]
+          }).addStyleClass("previewImageWrapper");
+
+          const oScroll = new sap.m.ScrollContainer({
+            width: "100%",
+            height: "100%",
+            horizontal: true,
+            vertical: true,
+            content: [oImageWrapper]
+          });
+
           oController._oImageDialog = new sap.m.Dialog({
             title: "Image",
             stretch: true,
-            content: [
-              new sap.m.Image({ width: "100%", densityAware: false })
-            ],
-            beginButton: new sap.m.Button({
-              text: "Close",
-              press: function () { oController._oImageDialog.close(); }
-            })
+            contentWidth: "100%",
+            contentHeight: "100%",
+            content: [oScroll],
+            buttons: [
+              new sap.m.Button({
+                text: "-",
+                press: function () {
+                  oController._iImageZoom = Math.max(0.2, oController._iImageZoom - 0.1);
+                  this._applyImageZoom(oController);
+                }.bind(this)
+              }),
+              new sap.m.Button({
+                text: "+",
+                press: function () {
+                  oController._iImageZoom = Math.min(5, oController._iImageZoom + 0.1);
+                  this._applyImageZoom(oController);
+                }.bind(this)
+              }),
+              new sap.m.Button({
+                text: "Download",
+                icon: "sap-icon://download",
+                press: function () {
+                  const a = document.createElement("a");
+                  a.href = oController._sCurrentImageSource;
+                  a.download = oController._sCurrentImageName;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                }
+              }),
+              new sap.m.Button({
+                text: "Close",
+                press: function () {
+                  oController._oImageDialog.close();
+                }
+              })
+            ]
           });
+
           oController.getView().addDependent(oController._oImageDialog);
         }
 
-        const oImg = oController._oImageDialog.getContent()[0];
+        oController._iImageZoom = 1;
+
+        const oScroll = oController._oImageDialog.getContent()[0];
+        const oWrapper = oScroll.getContent()[0];
+        const oImg = oWrapper.getItems()[0];
+
+        oController._sCurrentImageSource = sSource;
+        oController._sCurrentImageName =
+          oModel.getProperty("/CurrentInvoice/SelectedFileName") || "image";
         oImg.setSrc(sSource);
 
         oController._oImageDialog.open();
+
+        setTimeout(function () {
+          this._applyImageZoom(oController);
+        }.bind(this), 0);
+
         return;
       }
 
       // Fallback: unbekannt -> nur neues Tab öffnen
       window.open(sSource, "_blank");
+    },
+
+    _applyImageZoom: function (oController) {
+      const oScroll = oController._oImageDialog.getContent()[0];
+      const oWrapper = oScroll.getContent()[0];
+      const oImg = oWrapper.getItems()[0];
+      const oDom = oImg.getDomRef();
+
+      if (!oDom) {
+        return;
+      }
+
+      oDom.style.transform = "scale(" + oController._iImageZoom + ")";
+      oDom.style.transformOrigin = "center center";
     },
 
 

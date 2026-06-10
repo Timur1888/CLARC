@@ -1,5 +1,6 @@
-/* Enter your custom styles here *//* Enter your custom styles here */
-.myCreateBtn .sapMBtnInner{
+/* Enter your custom styles here */
+/* Enter your custom styles here */
+.myCreateBtn .sapMBtnInner {
   background: var(--sapAccentColor7);
   color: var(--sapButton_TextColor);
   font-family: var(--sapFontFamily);
@@ -7,12 +8,13 @@
 
 /* Fokusrahmen im Filter-Popover verstecken */
 .filterPopoverList .sapMLIB.sapMLIBFocusable:focus {
-    outline: none;
-    box-shadow: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .filterDeleteBtn {
-    margin-bottom: 0.2rem; /* feinjustieren nach Geschmack */
+  margin-bottom: 0.2rem;
+  /* feinjustieren nach Geschmack */
 }
 
 .hiddenFileUploader {
@@ -21,19 +23,22 @@
   opacity: 0;
   overflow: hidden;
   position: absolute;
-  left: -9999px;   /* aus dem sichtbaren Bereich schieben */
+  left: -9999px;
+  /* aus dem sichtbaren Bereich schieben */
 }
 
 #btnVariants {
-    font-weight: bold;
-    padding-right: 0.5rem;
+  font-weight: bold;
+  padding-right: 0.5rem;
 }
 
 
 /* Scrollbereich für die PDF-Preview innerhalb des Carousels */
 .pdfPageScroll {
-  height: 75vh;      /* mehr Platz als vorher */
-  overflow: auto;    /* scrollen, falls unten abgeschnitten */
+  height: 75vh;
+  /* mehr Platz als vorher */
+  overflow: auto;
+  /* scrollen, falls unten abgeschnitten */
 }
 
 /* Bild nicht verzerren, aber volle Breite */
@@ -43,11 +48,10 @@
   display: block;
 }
 
-
-
 /* DateRangeSelection Text + Placeholder kleiner */
 .facturaDateSmallText input {
-  font-size: 0.85rem;        /* kleiner Text */
+  font-size: 0.85rem;
+  /* kleiner Text */
 }
 
 /* Placeholder noch etwas kleiner */
@@ -62,19 +66,20 @@
 }
 
 /* Sicherstellen, dass der Inhalt die volle Höhe nutzt */
-.sapMTableTH > .sapMTableTHContent {
+.sapMTableTH>.sapMTableTHContent {
   height: 100%;
   display: flex;
   align-items: center;
 }
 
 /* so einstellen, dass "Information" komplett reinpasst */
-:root{
-  --histStatusCol: 4rem; 
-  --histGap: 0.5rem;   /* ≈ 19px = ca. 0,5 cm */
+:root {
+  --histStatusCol: 4rem;
+  --histGap: 0.5rem;
+  /* ≈ 19px = ca. 0,5 cm */
 }
 
-.histRow{
+.histRow {
   display: grid;
   grid-template-columns: var(--histStatusCol) 1fr;
   column-gap: var(--histGap);
@@ -82,31 +87,42 @@
   width: 100%;
 }
 
-.histText{
+.histText {
   width: 100%;
-  min-width: 0; /* wichtig fürs Wrapping bei langen Messages */
+  min-width: 0;
+  /* wichtig fürs Wrapping bei langen Messages */
 }
 
 .billingTableCanvas {
-    min-width: 140rem;
+  min-width: 140rem;
 }
 
 .billingTableHostFullScreen {
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    background: var(--sapBackgroundColor);
-    padding: 1rem;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--sapBackgroundColor);
+  padding: 1rem;
 }
 
 .billingTableHostFullScreen .sapMScrollCont {
-    height: calc(100vh - 4rem) !important;
+  height: calc(100vh - 4rem) !important;
 }
 
 .billingNoPageScroll {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .clarcMainLayout {
   flex: 1;
+}
+
+.previewImageWrapper {
+  min-height: 100%;
+}
+
+.previewZoomImage {
+  display: block;
+  object-fit: contain;
+  transform-origin: center center;
 }
