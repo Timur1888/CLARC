@@ -408,12 +408,14 @@ sap.ui.define([
         "ccBF_PDF": "pdf",
         "ccBF_XInvoice": "xrechnung",
         "ccBF_FacturX": "zugferd",
+        "ccBF_ZUGFeRD": "zugferd",
         "ccBF_Paper": "paper"
       };
 
       const mDeliveryMap = {
         "ccDM_Email": "email",
         "ccDM_PostalService": "post",
+        "ccDM_Postal Service": "post", // Fallback für den aktuell im Session-Model stehenden Wert
         "ccDM_EGatewayProvider": "eGateWay"
       };
 
@@ -718,7 +720,57 @@ sap.ui.define([
 
         // optional: Cache mit Response aktualisieren (falls Backend Felder ergänzt)
         const oSaved = await r.json().catch(() => null);
-        if (oSaved && oDocCache) oDocCache.setProperty("/doc", oSaved);
+        const oUpdatedDocument = oSaved || oFull;
+
+        if (oDocCache) {
+          oDocCache.setProperty("/doc", oUpdatedDocument);
+          oDocCache.setProperty("/canSave", false);
+        }
+
+        const oBackendModel = this.getOwnerComponent().getModel("backend");
+
+        if (oBackendModel) {
+          const aInvoices = oBackendModel.getProperty("/value") || [];
+
+          const iInvoiceIndex = aInvoices.findIndex(function (oInvoice) {
+            return String(oInvoice?.Id || "").trim() === String(sDocId).trim();
+          });
+
+          const aTargetPaths = ["/CurrentInvoice"];
+
+          if (iInvoiceIndex !== -1) {
+            aTargetPaths.push("/value/" + iInvoiceIndex);
+          }
+
+          aTargetPaths.forEach(function (sPath) {
+            oBackendModel.setProperty(
+              sPath + "/MetaData/Object/Data/Subject",
+              sSubject
+            );
+
+            oBackendModel.setProperty(
+              sPath + "/MetaData/Object/Data/AdditionalInformation",
+              sBody
+            );
+
+            oBackendModel.setProperty(
+              sPath + "/MetaData/Object/Data/Basics/TransferFormat",
+              sTransferFormat
+            );
+
+            oBackendModel.setProperty(
+              sPath + "/MetaData/Object/Data/Basics/DeliveryMethod",
+              sDeliveryMethod
+            );
+
+            oBackendModel.setProperty(
+              sPath + "/MetaData/Object/Data/Basics/Recipient/Email/0/Address",
+              sRecipient
+            );
+          });
+
+          oBackendModel.refresh(true);
+        }
         if (saveAfterSend == false) {
           MessageToast.show(this._oBundle.getText("DataSaved"));
           oDocCache.setProperty("/canSave", false);
