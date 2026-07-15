@@ -206,16 +206,33 @@ sap.ui.define([
 
     onLanguageSelectionChange: function (oEvent) {
       var oItem = oEvent.getParameter("listItem");
-      if (!oItem) { return; }
+      if (!oItem) {
+        return;
+      }
 
-      var sKey = oItem.getBindingContext("template")?.getProperty("key");
-      if (!sKey) { return; }
+      var sNewLanguageKey = oItem
+        .getBindingContext("template")
+        ?.getProperty("key");
 
       var oModel = this.getView().getModel("template");
       var sPath = this._getCurrentTemplatePath();
-      if (!oModel || !sPath) { return; }
 
-      oModel.setProperty(sPath + "/selectedLanguageKey", sKey);
+      if (!sNewLanguageKey || !oModel || !sPath) {
+        return;
+      }
+
+      var sOldLanguageKey =
+        oModel.getProperty(sPath + "/selectedLanguageKey");
+
+      // Nur beim tatsächlichen Sprachwechsel leeren
+      if (sOldLanguageKey !== sNewLanguageKey) {
+        oModel.setProperty(sPath + "/subject", "");
+        oModel.setProperty(sPath + "/body", "");
+        oModel.setProperty(
+          sPath + "/selectedLanguageKey",
+          sNewLanguageKey
+        );
+      }
     },
 
     _applyLanguageSelection: function () {
@@ -706,6 +723,7 @@ sap.ui.define([
           MessageToast.show(this._oBundle.getText("DataSaved"));
           oDocCache.setProperty("/canSave", false);
         }
+        oDocCache.setProperty("/canSave", false);
       } catch (e) {
         MessageToast.show(this._oBundle.getText("SaveError") + `: ${e.message || e}`);
         console.error(this._oBundle.getText("TemplateSaveError"), e);

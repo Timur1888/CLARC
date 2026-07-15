@@ -38,4 +38,4 @@ server:
           url: https://ui5.sap.com
         backend:
           - path: /application
-            destination: TEST_DEVELOPMENT_Auth2Credential
+            destination: CCI001_DEVELOPMENT_Auth2Credential
