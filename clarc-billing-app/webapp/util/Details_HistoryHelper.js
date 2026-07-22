@@ -1,4 +1,7 @@
-sap.ui.define(["clarc/billing/clarcbillingapp/util/Api"], function (Api) {
+sap.ui.define([
+  "sap/ui/core/format/DateFormat",
+  "clarc/billing/clarcbillingapp/util/Api"
+], function (DateFormat, Api) {
   "use strict";
 
   return {
@@ -170,7 +173,7 @@ sap.ui.define(["clarc/billing/clarcbillingapp/util/Api"], function (Api) {
     formatHistoryMeta: function (dDate, sCode) {
       if (!dDate) return sCode || "";
 
-      const oFmt = sap.ui.core.format.DateFormat.getDateTimeInstance({
+      const oFmt = DateFormat.getDateTimeInstance({
         pattern: "dd.MM.yy HH:mm:ss"
       });
 

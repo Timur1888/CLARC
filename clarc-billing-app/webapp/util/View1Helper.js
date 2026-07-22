@@ -5,6 +5,7 @@ sap.ui.define([
   "sap/m/Token",
   "sap/ui/model/Sorter",
   "sap/m/table/columnmenu/QuickSortItem",
+  "sap/m/MessageToast",
   "clarc/billing/clarcbillingapp/util/Api"
 ], function (
   Fragment,
@@ -13,6 +14,7 @@ sap.ui.define([
   Token,
   Sorter,
   QuickSortItem,
+  MessageToast,
   Api
 ) {
   "use strict";
@@ -352,12 +354,12 @@ sap.ui.define([
      * - "7000 - 8000"     -> dito
      */
     _buildNettoFilterForClarc: function (sInput, sPath) {
-      const oBundle = this.getBundle(oController);
+      const oBundle = this._oBundle;
       const raw = String(sInput || "").trim();
       if (!raw) return "";
 
       if (raw.includes("*")) {
-        sap.m.MessageToast.show(oBundle.getText("InvalidInput"));
+        MessageToast.show(oBundle.getText("InvalidInput"));
         return "__INVALID__";
       }
       // Helper: Zahl tolerant parsen (auch "1.500,00 €" -> 1500)
@@ -377,11 +379,11 @@ sap.ui.define([
         const nFrom = parseNum(m[1]);
         const nTo = parseNum(m[2]);
         if (nFrom === null || nTo === null) {
-          sap.m.MessageToast.show(oBundle.getText("NetValueRange"));
+          MessageToast.show(oBundle.getText("NetValueRange"));
           return "__INVALID__";
         }
         if (nFrom > nTo) {
-          sap.m.MessageToast.show(oBundle.getText("NetValueFromTo"));
+          MessageToast.show(oBundle.getText("NetValueFromTo"));
           return "__INVALID__";
         }
         return `(${sPath} ge ${nFrom} and ${sPath} le ${nTo})`;
@@ -389,7 +391,7 @@ sap.ui.define([
       // Single value
       const n = parseNum(raw);
       if (n === null) {
-        sap.m.MessageToast.show(oBundle.getText("NetValueRange2"));
+        MessageToast.show(oBundle.getText("NetValueRange2"));
         return "__INVALID__";
       }
 
@@ -556,7 +558,7 @@ sap.ui.define([
 
     //Helper für Datumvalidierung
     _validateDateDDMMYYYY: function (s) {
-      const oBundle = this.getBundle(oController);
+      const oBundle = this._oBundle;
       // erwartet "dd.MM.yyyy"
       var m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s || "");
       if (!m) {

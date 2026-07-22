@@ -5,11 +5,12 @@ sap.ui.define([
   "sap/ui/model/json/JSONModel",
   "sap/m/PDFViewer",
   "sap/m/MessageToast",
+  "sap/m/MessageBox",
   "clarc/billing/clarcbillingapp/util/Details_PDFViewHelper",
   "clarc/billing/clarcbillingapp/util/Details_HistoryHelper",
   "clarc/billing/clarcbillingapp/util/Details_FilesUpload",
   "clarc/billing/clarcbillingapp/util/Api"
-], (Controller, UIComponent, Fragment, JSONModel, PDFViewer, MessageToast, Details_PDFViewHelper, Details_HistoryHelper, Details_FilesUpload, Api) => {
+], (Controller, UIComponent, Fragment, JSONModel, PDFViewer, MessageToast, MessageBox, Details_PDFViewHelper, Details_HistoryHelper, Details_FilesUpload, Api) => {
 
   "use strict";
 
@@ -17,7 +18,7 @@ sap.ui.define([
 
     onInit() {
       if (!this.getView().getModel("history")) {
-        this.getView().setModel(new sap.ui.model.json.JSONModel({
+        this.getView().setModel(new JSONModel({
           busy: false,
           logs: [],
           lastDocId: "",
@@ -26,7 +27,7 @@ sap.ui.define([
         }), "history");
       }
 
-      var oSendModel = new sap.ui.model.json.JSONModel({
+      var oSendModel = new JSONModel({
         transferFormat: "",
         deliveryMethod: "",
         recipient: "",
@@ -50,7 +51,7 @@ sap.ui.define([
       this.getView().setModel(oTemplateModel, "template");
 
       //das Model, das das JSON des ganzen Dokuments zwischenspeichert.
-      this.getView().setModel(new sap.ui.model.json.JSONModel({
+      this.getView().setModel(new JSONModel({
         docId: "",
         doc: null,
         fetchedAt: null,
@@ -296,7 +297,7 @@ sap.ui.define([
     },
     _onRouteMatched: function (oEvent) {
       const oMain = this.getView().getModel("mainView");
-      const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+      const oRouter = UIComponent.getRouterFor(this);
 
       // Reload / direkter Einstieg: Details NICHT öffnen, sondern zurück zur Liste
       if (oMain && !oMain.getProperty("/openDetailsOnMatch")) {
@@ -557,14 +558,14 @@ sap.ui.define([
       const sBcc = (oSend?.getProperty("/bcc") || "").trim();
 
       if (!sRecipient) {
-        sap.m.MessageBox.warning(this._oBundle.getText("NoReciever"));
+        MessageBox.warning(this._oBundle.getText("NoReciever"));
         oSend.setProperty("/canSend", true);
         return;
       }
 
       const sDocHubItemId = (oModel?.getProperty("/CurrentInvoice/Id") || "").trim();
       if (!sDocHubItemId) {
-        sap.m.MessageBox.error(this._oBundle.getText("NoDocSelected"));
+        MessageBox.error(this._oBundle.getText("NoDocSelected"));
         return;
       }
 
@@ -576,7 +577,7 @@ sap.ui.define([
       }
 
       if (!sBillingId) {
-        sap.m.MessageBox.error(this._oBundle.getText("NoBilling"));
+        MessageBox.error(this._oBundle.getText("NoBilling"));
         return;
       }
 
@@ -593,7 +594,7 @@ sap.ui.define([
       };
 
       if (!oPayload.Recipients.length) {
-        sap.m.MessageBox.error(this._oBundle.getText("RecipientAmount"));
+        MessageBox.error(this._oBundle.getText("RecipientAmount"));
         return;
       }
 
@@ -614,17 +615,17 @@ sap.ui.define([
 
         const sText = await oResp.text();
         if (!oResp.ok) {
-          sap.m.MessageBox.error(this._oBundle.getText("SendError") + ` (${oResp.status}): ${sText}`);
+          MessageBox.error(this._oBundle.getText("SendError") + ` (${oResp.status}): ${sText}`);
           return;
         }
 
-        sap.m.MessageToast.show(this._oBundle.getText("SendSuccess"));
+        MessageToast.show(this._oBundle.getText("SendSuccess"));
 
         this.onSavePanel(true);
 
       } catch (e) {
         oSend.setProperty("/canSend", true);
-        sap.m.MessageBox.error(
+        MessageBox.error(
           this._oBundle.getText("SendError") + `: ${e?.message || e}`
         );
       } finally {

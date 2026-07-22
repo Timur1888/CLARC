@@ -1,4 +1,10 @@
-sap.ui.define([], function () {
+sap.ui.define([
+    "sap/m/Image",
+    "sap/m/VBox",
+    "sap/m/ScrollContainer",
+    "sap/m/Dialog",
+    "sap/m/Button"
+], function (Image, VBox, ScrollContainer, Dialog, Button) {
     "use strict";
 
     return {
@@ -10,7 +16,7 @@ sap.ui.define([], function () {
                 return;
             }
 
-            const oImage = new sap.m.Image({
+            const oImage = new Image({
                 densityAware: false,
                 width: "100%",
                 height: "100%"
@@ -18,7 +24,7 @@ sap.ui.define([], function () {
 
             oController._oImagePreview = oImage;
 
-            const oWrapper = new sap.m.VBox({
+            const oWrapper = new VBox({
                 width: "100%",
                 height: "100%",
                 alignItems: "Center",
@@ -26,7 +32,7 @@ sap.ui.define([], function () {
                 items: [oImage]
             }).addStyleClass("previewImageWrapper");
 
-            const oScroll = new sap.m.ScrollContainer({
+            const oScroll = new ScrollContainer({
                 width: "100%",
                 height: "100%",
                 horizontal: true,
@@ -34,28 +40,28 @@ sap.ui.define([], function () {
                 content: [oWrapper]
             });
             const oBundle = this.getBundle(oController);
-            oController._oImageDialog = new sap.m.Dialog({
+            oController._oImageDialog = new Dialog({
                 title: "Image",
                 stretch: true,
                 contentWidth: "100%",
                 contentHeight: "100%",
                 content: [oScroll],
                 buttons: [
-                    new sap.m.Button({
+                    new Button({
                         icon: "sap-icon://zoom-out",
                         press: function () {
                             oController._iImageZoom = Math.max(0.2, oController._iImageZoom - 0.1);
                             this.applyImageZoom(oController);
                         }.bind(this)
                     }),
-                    new sap.m.Button({
+                    new Button({
                         icon: "sap-icon://zoom-in",
                         press: function () {
                             oController._iImageZoom = Math.min(5, oController._iImageZoom + 0.1);
                             this.applyImageZoom(oController);
                         }.bind(this)
                     }),
-                    new sap.m.Button({
+                    new Button({
                         text: oBundle.getText("ImgDownload"),
                         icon: "sap-icon://download",
                         press: async function () {
@@ -73,7 +79,7 @@ sap.ui.define([], function () {
                             setTimeout(() => URL.revokeObjectURL(sBlobUrl), 1000);
                         }
                     }),
-                    new sap.m.Button({
+                    new Button({
                         text: oBundle.getText("ImgClose"),
                         press: function () {
                             oController._oImageDialog.close();

@@ -1,8 +1,9 @@
 sap.ui.define([
   "sap/ui/core/UIComponent",
+  "sap/m/MessageBox",
   "clarc/billing/clarcbillingapp/util/Api",
   "clarc/billing/clarcbillingapp/util/ImageDialogHelper"
-], function (UIComponent, Api, ImageDialogHelper) {
+], function (UIComponent, MessageBox, Api, ImageDialogHelper) {
   "use strict";
 
   return {
@@ -74,7 +75,7 @@ sap.ui.define([
 
             const sText = await oResp.text();
             if (!oResp.ok) {
-              sap.m.MessageBox.error(oBundle.getText("UploadError") + ` (${oResp.status}): ${sText}`);
+              MessageBox.error(oBundle.getText("UploadError") + ` (${oResp.status}): ${sText}`);
               return;
             }
             const oJson = JSON.parse(sText);
@@ -223,7 +224,7 @@ sap.ui.define([
       const oBundle = this.getBundle(oController);
       if (onSave === true) {
 
-        sap.m.MessageBox.confirm(
+        MessageBox.confirm(
           oBundle.getText("ExitWarrning"),
           {
             title: "Confirm",
@@ -232,7 +233,7 @@ sap.ui.define([
 
               if (sAction === "Okay") {
 
-                const oRouter = sap.ui.core.UIComponent.getRouterFor(oController);
+                const oRouter = UIComponent.getRouterFor(oController);
                 oRouter.navTo("RouteView1", {}, true);
 
                 const oMainViewModel = oController.getView().getModel("mainView");
@@ -248,7 +249,7 @@ sap.ui.define([
         return; // verhindert dass Code sofort weiterläuft
       }
 
-      const oRouter = sap.ui.core.UIComponent.getRouterFor(oController);
+      const oRouter = UIComponent.getRouterFor(oController);
       oRouter.navTo("RouteView1", {}, true);
 
       const oMainViewModel = oController.getView().getModel("mainView");

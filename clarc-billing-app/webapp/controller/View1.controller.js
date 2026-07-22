@@ -13,6 +13,8 @@ sap.ui.define([
     "sap/m/CheckBox",
     "sap/m/Popover",
     "sap/m/library",
+    "sap/ui/core/library",
+    "sap/m/MessageToast",
     "sap/ui/comp/smartvariants/PersonalizableInfo",
     "sap/ui/model/type/String",
     "sap/m/Label",
@@ -24,7 +26,6 @@ sap.ui.define([
     "sap/ui/model/Sorter",
     "sap/m/table/columnmenu/QuickSortItem",
     "clarc/billing/clarcbillingapp/util/View1Helper",
-    "sap/m/library",
     "clarc/billing/clarcbillingapp/util/Api"
 ], function (
 
@@ -42,6 +43,8 @@ sap.ui.define([
     CheckBox,
     Popover,
     mLibrary,
+    coreLibrary,
+    MessageToast,
     PersonalizableInfo,
     TypeString,
     Label,
@@ -53,7 +56,6 @@ sap.ui.define([
     Sorter,
     QuickSortItem,
     View1Helper,
-    PlacementType,
     Api
 ) {
     "use strict";
@@ -88,7 +90,7 @@ sap.ui.define([
             this.oFilterBar.registerGetFiltersWithValues(this.getFiltersWithValues);
 
             // WICHTIG: Standardtyp "filterBar" verwenden
-            var oPersInfo = new sap.ui.comp.smartvariants.PersonalizableInfo({
+            var oPersInfo = new PersonalizableInfo({
                 type: "filterBar",
                 keyName: "persistencyKey",
                 control: this.oFilterBar
@@ -200,7 +202,7 @@ sap.ui.define([
             // 🔔 KEINE TREFFER
             const aRows = this.getOwnerComponent().getModel("backend").getProperty("/value") || [];
             if (aRows.length === 0) {
-                sap.m.MessageToast.show(
+                MessageToast.show(
                     this._oBundle.getText("NoResultsForFilter")
                 );
             }
@@ -218,14 +220,14 @@ sap.ui.define([
             const oTable = this.byId("tblBilling");
             const aColumns = oTable.getColumns();
 
-            const oList = new sap.m.List({
+            const oList = new List({
                 items: aColumns.map(col => {
                     const sColLabel = col.getHeader().getText();
 
-                    return new sap.m.CustomListItem({
-                        content: new sap.m.HBox({
+                    return new CustomListItem({
+                        content: new HBox({
                             items: [
-                                new sap.m.CheckBox({
+                                new CheckBox({
                                     selected: col.getVisible(),
                                     text: sColLabel,
                                     select: function (oEvent) {
@@ -239,8 +241,8 @@ sap.ui.define([
                 })
             });
 
-            this._oColumnPopover = new sap.m.Popover({
-                placement: sap.m.PlacementType.Auto,   // <= wichtig
+            this._oColumnPopover = new Popover({
+                placement: mLibrary.PlacementType.Auto,   // <= wichtig
                 title: "{i18n>Columns}",
                 contentWidth: "16rem",
                 content: oList
@@ -496,7 +498,7 @@ sap.ui.define([
 
                 // ValueState reset
                 if (oC.setValueState) {
-                    oC.setValueState(sap.ui.core.ValueState.None);
+                    oC.setValueState(coreLibrary.ValueState.None);
                 }
                 if (oC.setValueStateText) {
                     oC.setValueStateText("");
@@ -516,7 +518,7 @@ sap.ui.define([
 
             // leer -> ok
             if (!sText) {
-                oDRS.setValueState(sap.ui.core.ValueState.None);
+                oDRS.setValueState(coreLibrary.ValueState.None);
                 oDRS.setValueStateText("");
                 this.onAddFilter();
                 this._closeDRSPopup(oDRS);
@@ -530,7 +532,7 @@ sap.ui.define([
 
             // ange-only erzwingen
             if (aParts.length !== 2) {
-                oDRS.setValueState(sap.ui.core.ValueState.Error);
+                oDRS.setValueState(coreLibrary.ValueState.Error);
                 oDRS.setValueStateText(this._oBundle.getText("SelectDateRange"));
                 oDRS.setDateValue(null);
                 oDRS.setSecondDateValue(null);
@@ -541,7 +543,7 @@ sap.ui.define([
             var rTo = this._validateDateDDMMYYYY(aParts[1]);
 
             if (!rFrom.ok || !rTo.ok) {
-                oDRS.setValueState(sap.ui.core.ValueState.Error);
+                oDRS.setValueState(coreLibrary.ValueState.Error);
                 oDRS.setValueStateText((!rFrom.ok ? rFrom.msg : rTo.msg) || this._oBundle.getText("InvalidDateRange"));
                 oDRS.setDateValue(null);
                 oDRS.setSecondDateValue(null);
@@ -550,7 +552,7 @@ sap.ui.define([
 
             // Optional: von > bis verhindern
             if (rFrom.date.getTime() > rTo.date.getTime()) {
-                oDRS.setValueState(sap.ui.core.ValueState.Error);
+                oDRS.setValueState(coreLibrary.ValueState.Error);
                 oDRS.setValueStateText(this._oBundle.getText("FromBeforeTo"));
                 oDRS.setDateValue(null);
                 oDRS.setSecondDateValue(null);
@@ -561,7 +563,7 @@ sap.ui.define([
             oDRS.setDateValue(rFrom.date);
             oDRS.setSecondDateValue(rTo.date);
 
-            oDRS.setValueState(sap.ui.core.ValueState.None);
+            oDRS.setValueState(coreLibrary.ValueState.None);
             oDRS.setValueStateText("");
 
             this.onAddFilter();
@@ -570,7 +572,7 @@ sap.ui.define([
 
         onFacturaDateParseError: function (oEvent) {
             var oDRS = oEvent.getSource();
-            oDRS.setValueState(sap.ui.core.ValueState.Error);
+            oDRS.setValueState(coreLibrary.ValueState.Error);
             oDRS.setValueStateText(this._oBundle.getText("InvalidDateFormat"));
         },
 
