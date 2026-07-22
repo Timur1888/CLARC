@@ -131,6 +131,14 @@ sap.ui.define([
     },
 
 
+    _snapshotTemplate: function (oModel, sPath) {
+      return {
+        subject: oModel.getProperty(sPath + "/subject") || "",
+        body: oModel.getProperty(sPath + "/body") || "",
+        selectedLanguageKey: oModel.getProperty(sPath + "/selectedLanguageKey") || "en"
+      };
+    },
+
     onOpenTemplateDialog: function () {
       var oView = this.getView();
       var oModel = oView.getModel("template");
@@ -138,11 +146,7 @@ sap.ui.define([
       if (!oModel || !sPath) { return; }
 
       // ✅ Backup für Cancel (nur aktuelle Rechnung!)
-      this._oTemplateBackup = {
-        subject: oModel.getProperty(sPath + "/subject") || "",
-        body: oModel.getProperty(sPath + "/body") || "",
-        selectedLanguageKey: oModel.getProperty(sPath + "/selectedLanguageKey") || "en"
-      };
+      this._oTemplateBackup = this._snapshotTemplate(oModel, sPath);
 
       if (!this._pMsgTemplateDialog) {
         this._pMsgTemplateDialog = Fragment.load({
@@ -175,11 +179,7 @@ sap.ui.define([
       var oModel = this.getView().getModel("template");
       var sPath = this._getCurrentTemplatePath();
       if (oModel && sPath) {
-        this._oTemplateBackup = {
-          subject: oModel.getProperty(sPath + "/subject") || "",
-          body: oModel.getProperty(sPath + "/body") || "",
-          selectedLanguageKey: oModel.getProperty(sPath + "/selectedLanguageKey") || "en"
-        };
+        this._oTemplateBackup = this._snapshotTemplate(oModel, sPath);
       }
       this.onValueChange(); //Save Button aktivieren
       // Panel-Templates ggf. direkt aktualisieren
