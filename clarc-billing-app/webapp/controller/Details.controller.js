@@ -774,7 +774,6 @@ sap.ui.define([
         }
         if (saveAfterSend == false) {
           MessageToast.show(this._oBundle.getText("DataSaved"));
-          oDocCache.setProperty("/canSave", false);
         }
         oDocCache.setProperty("/canSave", false);
       } catch (e) {
