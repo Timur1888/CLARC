@@ -216,6 +216,13 @@
                                     </customData>
                                     <Text id="txtOrigin" text="{i18n>Origin}"/>
                                 </Column>
+                                <!-- ====== Debitor ID ====== -->
+                                <Column id="colDebitorId" headerMenu="columnHeaderMenu" width="100px" hAlign="Begin">
+                                    <customData>
+                                        <core:CustomData key="sortKey" value="MetaData/Object/Data/BusinessPartners/1/Id/Value" writeToDom="false"/>
+                                    </customData>
+                                    <Text id="txtColDebitorId" text="{i18n>DebId}"/>
+                                </Column>
                                 <!-- ====== Sales Org ====== -->
                                 <Column id="colSalesOrg" headerMenu="columnHeaderMenu" width="126px" hAlign="Begin">
                                     <customData>
@@ -321,6 +328,7 @@
                                 }" />
 
                                         <Text id="txtOriginCell" text="{backend>MetaData/OriginSystem}" />
+                                        <Text id="txtDebitorIdCell" text="{backend>MetaData/Object/Data/BusinessPartners/1/Id/Value}" />
                                         <Text id="txtSalesOrgCell" text="{backend>MetaData/Object/Data/BusinessPartners/0/SalesOrganisation/Value}" />
 
                                         <Text id="txtFacturaDateCell" text="{
