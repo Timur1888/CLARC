@@ -126,3 +126,8 @@
   object-fit: contain;
   transform-origin: center center;
 }
+
+[id$="--colNettoValue-ah"],
+[id$="--colBruttoValue-ah"] {
+  justify-content: flex-start !important;
+}
