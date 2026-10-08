@@ -83,7 +83,21 @@ sap.ui.define([
     },
 
     onValueChange: function () {
+      if (this._isInvoiceFinished()) {
+        return;
+      }
       this.getView().getModel("docCache").setProperty("/canSave", true);
+    },
+
+    // Rechnung bereits erfolgreich versendet -> im Panel nicht mehr speicherbar
+    _isInvoiceFinished: function () {
+      const oModel = this.getOwnerComponent().getModel("backend");
+      return oModel?.getProperty("/CurrentInvoice/State") === "ccDS_Finished";
+    },
+
+    // Save-Button bleibt bei versendeten (ccDS_Finished) Rechnungen immer ausgegraut
+    formatSaveEnabled: function (bCanSave, sState) {
+      return !!bCanSave && sState !== "ccDS_Finished";
     },
 
     // ------------------------------- Edit Templates -------------------------------
@@ -496,7 +510,7 @@ sap.ui.define([
     },
 
     onClose: function () {
-      const bCanSave = this.getView().getModel("docCache").getProperty("/canSave");
+      const bCanSave = !this._isInvoiceFinished() && this.getView().getModel("docCache").getProperty("/canSave");
       return Details_PDFViewHelper.onClose(this, bCanSave);
     },
 
@@ -539,6 +553,7 @@ sap.ui.define([
       const oHistory = oView.getModel("history");
       const oModel = this.getOwnerComponent().getModel("backend");
       const oTemplate = oView.getModel("template");
+      const bWasFinished = this._isInvoiceFinished();
 
       // Button sofort ausgrauen
       oSend.setProperty("/canSend", false);
@@ -621,7 +636,11 @@ sap.ui.define([
 
         MessageToast.show(this._oBundle.getText("SendSuccess"));
 
-        this.onSavePanel(true);
+        // Bereits abgeschlossene (ccDS_Finished) Rechnungen dürfen durch erneutes Senden
+        // nicht mehr verändert/überschrieben werden -> kein Auto-Save der Eingaben
+        if (!bWasFinished) {
+          this.onSavePanel(true);
+        }
 
       } catch (e) {
         oSend.setProperty("/canSend", true);

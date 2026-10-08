@@ -7,7 +7,9 @@
     xmlns:svm="sap.ui.comp.smartvariants">
 
 
-    <f:DynamicPage id="dpBilling" headerExpanded="true" toggleHeaderOnTitleClick="true">
+    <!-- fitContent: Content füllt die Resthöhe, damit der ScrollContainer eine feste Höhe hat
+         und der horizontale Scrollbalken immer im sichtbaren Bereich bleibt (auch nach FCL-Layoutwechsel) -->
+    <f:DynamicPage id="dpBilling" headerExpanded="true" toggleHeaderOnTitleClick="true" fitContent="true">
         <f:title>
             <f:DynamicPageTitle id="dptTitle">
 
@@ -161,14 +163,14 @@
                                     <Text id="txtColRecipientName" text="{i18n>RecName}"/>
                                 </Column>
                                 <!-- ====== E-Mail ====== -->
-                                <Column id="colRecipientEmail" headerMenu="columnHeaderMenu" hAlign="Begin" width="115px">
+                                <Column id="colRecipientEmail" headerMenu="columnHeaderMenu" hAlign="Begin" width="120px">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/Basics/Recipient/Email/0/Address" writeToDom="false"/>
                                     </customData>
                                     <Text id="txtColRecipientEmail" text="{i18n>RecEmail}"/>
                                 </Column>
                                 <!-- ====== Invoice No ====== -->
-                                <Column id="colInvoiceNo" headerMenu="columnHeaderMenu" hAlign="Begin" width="90px">
+                                <Column id="colInvoiceNo" headerMenu="columnHeaderMenu" hAlign="Begin" width="95px">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/Basics/Number/Value" writeToDom="false"/>
                                     </customData>
@@ -224,35 +226,35 @@
                                     <Text id="txtColDebitorId" text="{i18n>DebId}"/>
                                 </Column>
                                 <!-- ====== Sales Org ====== -->
-                                <Column id="colSalesOrg" headerMenu="columnHeaderMenu" width="126px" hAlign="Begin">
+                                <Column id="colSalesOrg" headerMenu="columnHeaderMenu" width="137px" hAlign="Begin">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/BusinessPartners/0/SalesOrganisation/Value" writeToDom="false"/>
                                     </customData>
                                     <Text id="txtColSalesOrg" text="{i18n>SalesOrg}"/>
                                 </Column>
                                 <!-- ====== Factura Date ====== -->
-                                <Column id="colFacturaDate" headerMenu="columnHeaderMenu" width="110px" hAlign="Begin">
+                                <Column id="colFacturaDate" headerMenu="columnHeaderMenu" width="120px" hAlign="Begin">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/Basics/Date/Value/$date" writeToDom="false"/>
                                     </customData>
                                     <Text id="txtColFacturaDate" text="{i18n>FacDate}"/>
                                 </Column>
                                 <!-- ====== Creation Datee ====== -->
-                                <Column id="colCreationDate" headerMenu="columnHeaderMenu" width="108px" hAlign="Begin">
+                                <Column id="colCreationDate" headerMenu="columnHeaderMenu" width="118px" hAlign="Begin">
                                     <customData>
                                         <core:CustomData key="sortKey" value="History/Created/Date/$date" writeToDom="false"/>
                                     </customData>
                                     <Text id="txtColCreationDate" text="{i18n>CreateDate}"/>
                                 </Column>
                                 <!-- ====== Dispatch Datee ====== -->
-                                <Column id="colDispatchDate" headerMenu="columnHeaderMenu" width="105px" hAlign="Begin">
+                                <Column id="colDispatchDate" headerMenu="columnHeaderMenu" width="110px" hAlign="Begin">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/Basics/SendDate/$date" writeToDom="false"/>
                                     </customData>
                                     <Text id="txtColDispatchDate" text="{i18n>DispDate}"/>
                                 </Column>
                                 <!-- ====== Transfer Format ====== -->
-                                <Column id="colTransferFormat" headerMenu="columnHeaderMenu" width="125px" hAlign="Begin">
+                                <Column id="colTransferFormat" headerMenu="columnHeaderMenu" width="135px" hAlign="Begin">
                                     <customData>
                                         <core:CustomData key="sortKey" value="MetaData/Object/Data/Basics/TransferFormat" writeToDom="false"/>
                                     </customData>

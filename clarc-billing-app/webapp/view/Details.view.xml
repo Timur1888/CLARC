@@ -63,7 +63,7 @@
                         <Title id="titleOutput" text="{i18n>Output}" level="H4" class="sapUiMediumMarginTop" />
                         <VBox id="outputVBox" class="sapUiSmallMarginTop" width="97%">
                            <Label id="lblTransferFormat" text="{i18n>TransForm}" class="sapUiSmallMarginTop sapUiTinyMarginBottom" />
-                           <Select id = "transF" width="100%" class="sapUiSmallMarginBottom" selectedKey="{send>/transferFormat}" change=".onValueChange">
+                           <Select id = "transF" width="100%" class="sapUiSmallMarginBottom" selectedKey="{send>/transferFormat}" enabled="{= ${backend>State} !== 'ccDS_Finished' }" change=".onValueChange">
                               <items>
                                  <core:Item id="itemTransferPdf" key="pdf" text="PDF" />
                                  <core:Item id="itemTransferXrechnung" key="xrechnung" text="XRechnung" />
@@ -73,7 +73,7 @@
                            </Select>
 
                            <Label id="lblDeliveryMethod" text="{i18n>DelMeth}" class="sapUiSmallMarginTop sapUiTinyMarginBottom" />
-                           <Select id = "delMeth" width="100%" class="sapUiSmallMarginBottom" selectedKey="{send>/deliveryMethod}" change=".onValueChange">
+                           <Select id = "delMeth" width="100%" class="sapUiSmallMarginBottom" selectedKey="{send>/deliveryMethod}" enabled="{= ${backend>State} !== 'ccDS_Finished' }" change=".onValueChange">
                               <items>
                                  <core:Item id="itemDeliveryEmail" key="email" text="Email" />
                                  <core:Item id="itemDeliveryPost" key="post" text="Postal Service" />
@@ -139,7 +139,7 @@
       <footer>
          <Toolbar id="footerToolbar">
             <ToolbarSpacer id="footerToolbarSpacer" />
-            <Button id="btnSave" text="{i18n>Save}" type="Transparent" enabled="{docCache>/canSave}" press=".onPressSave"/>
+            <Button id="btnSave" text="{i18n>Save}" type="Transparent" enabled="{parts: ['docCache>/canSave', 'backend>State'], formatter: '.formatSaveEnabled'}" press=".onPressSave"/>
             <Button id="btnSend" text="{i18n>Send}" type="Emphasized" enabled="{send>/canSend}" press=".onSendInvoice"/>
          </Toolbar>
       </footer>
