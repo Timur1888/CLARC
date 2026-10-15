@@ -8,12 +8,13 @@ This is the **CLARC Billing App** — a SaaS SAPUI5/Fiori application for the CL
 
 The repo is an MTA (Multi-Target Application) for SAP BTP Cloud Foundry, composed of:
 - `clarc-billing-app/` — the actual UI5 Fiori app (all frontend code lives here)
-- `approuter/` — SAP standard `@sap/approuter` acting as the reverse proxy / auth gateway for the deployed app
 - `mta.yaml` — deployment topology: destination content, HTML5 app-host/runtime, XSUAA, SaaS registry, UI5 flexibility service
 - `xs-security.json` — XSUAA security profile (scopes/role templates) at the MTA level
 - `workzone/cdm.json`, `resources/cdm.json` — Work Zone / content-delivery manifest fragments bundled into the deploy
 
-There is no custom backend in this repo — the UI5 app talks to an external CLARC backend (documenthub, bpm/billing APIs) through the approuter's destinations, not through anything implemented here.
+There is no custom backend in this repo — the UI5 app talks to an external CLARC backend (documenthub, bpm/billing APIs) through BTP destinations, not through anything implemented here.
+
+There is no own approuter module: the app is served exclusively via the SAP **managed approuter** (Work Zone / HTML5 Applications), which reads `clarc-billing-app/xs-app.json` from the deployed zip in the HTML5 repo. Multi-tenancy is resolved by the managed approuter from the login token, not via `TENANT_HOST_PATTERN`.
 
 ## Commands
 
@@ -66,7 +67,7 @@ Declared in `manifest.json` and initialized in `Component.js`:
 There is no shared data/service layer beyond `util/Api.js`; each controller/util module calls `fetch()` directly against backend REST endpoints.
 
 ### Backend calls
-All requests go through `util/Api.js#apiUrl(path)`, which just prefixes the app's own resource root (`sap.ui.require.toUrl(...)`) — the actual `/application/...` backend routing happens later, at the **approuter** layer (`xs-app.json` in both `approuter/` and `clarc-billing-app/`), which proxies `^/application/(.*)$` to the `CCI001_PRODUCTIVE_Auth2Credential` (or `CCI001_DEVELOPMENT_Auth2Credential` locally, see `ui5.yaml`/`ui5-local.yaml`) destination with XSUAA auth. Key endpoints used by the app:
+All requests go through `util/Api.js#apiUrl(path)`, which just prefixes the app's own resource root (`sap.ui.require.toUrl(...)`) — the actual `/application/...` backend routing happens later, at the **managed approuter** layer (`clarc-billing-app/xs-app.json`), which proxies `^/application/(.*)$` to the `CCI001_PRODUCTIVE_Auth2Credential` (or `CCI001_DEVELOPMENT_Auth2Credential` locally, see `ui5.yaml`/`ui5-local.yaml`) destination with XSUAA auth. Key endpoints used by the app:
 - `GET /application/api/v1/bpm/billing?$expand=SalesOrgs&$filter=...` — billing config / sales orgs (`Component.js`)
 - `GET /application/api/v1/documenthub/document?$select=...&$filter=...&$top=...&$orderby=...` — invoice list (`View1Helper.js`, `View1.controller.js#onSearch`)
 - `PUT /application/api/v1/documenthub/document(<id>)` — save edited invoice metadata (`Details.controller.js#onSavePanel`)

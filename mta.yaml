@@ -60,22 +60,6 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
-# 4) App Router Module  
-- name: CLARC-approuter
-  type: approuter.nodejs
-  path: approuter
-  requires:
-  - name: uaa_CLARC
-  - name: CLARC-destination-service
-  - name: CLARC_html_repo_runtime
-  properties:
-    TENANT_HOST_PATTERN: "^(.*)-clarc-billing-app.cfapps.eu30.hana.ondemand.com$"
-  parameters:
-    memory: 256M
-    disk-quota: 256M
-    keep-existing-routes: true
-    routes:
-    - route: clarc-billing-app.cfapps.eu30.hana.ondemand.com
 
 resources:
 # Destination Service
