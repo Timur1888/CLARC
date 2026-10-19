@@ -9,7 +9,7 @@
     {
       "source": "^/application/(.*)$",
       "target": "/application/$1",
-      "destination": "CCI001_PRODUCTIVE_Auth2Credential",
+      "destination": "TEST_DEVELOPMENT_OAuth2JWTBearer",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
