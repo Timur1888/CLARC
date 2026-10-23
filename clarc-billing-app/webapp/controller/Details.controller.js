@@ -61,7 +61,7 @@ sap.ui.define([
       this._pMsgTemplateDialog = null;
       this._oTemplateBackup = null; // Backup nur für aktuelle Rechnung
 
-      // ✅ PDFViewer wie im UI5 Sample (einmalig)
+      
       this._oPdfViewer = new PDFViewer({
         isTrustedSource: true,
         showDownloadButton: true
